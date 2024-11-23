@@ -13,7 +13,7 @@
             <a href="{{ url_for('signup') }}" class="{% if request.endpoint == 'signup' %}active{% endif %}">Sign Up</a>
         {% endif %}
         <a href="{{ url_for('payment') }}" class="{% if request.endpoint == 'payment' %}active{% endif %}">Payment</a>
-        <a href="{{ url_for('verify-address') }}" class="{% if request.endpoint == 'verify-address' %}active{% endif %}">Verify Address</a>
+        <a href="{{ url_for('verify_address') }}" class="{% if request.endpoint == 'verify-address' %}active{% endif %}">Verify Address</a>
     </nav>
 </header>
 
