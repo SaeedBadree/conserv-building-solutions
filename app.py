@@ -40,16 +40,20 @@ def index():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    print("Rendering signup.html")
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
         password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
+        
         user = User(username=username, email=email, password=password)
         db.session.add(user)
         db.session.commit()
+        
         flash('Account created successfully!', 'success')
         return redirect(url_for('login'))
     return render_template('signup.html')
+
 
 
 
@@ -103,7 +107,7 @@ def login():
             flash('Login failed. Check your email and password.', 'danger')
     return render_template('login.html')
 
-@app.route('/logout')
+@app.route('/logout', methods=['GET', 'POST'])
 @login_required
 def logout():
     logout_user()

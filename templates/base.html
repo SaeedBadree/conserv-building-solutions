@@ -5,115 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Conserv Building Solutions{% endblock %}</title>
     <link rel="stylesheet" href="/static/styles.css">
-    <style>
-        /* Additional styles for navigation */
-        nav {
-            display: flex;
-            justify-content: center;
-            background-color: #004085;
-            padding: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: bold;
-            padding: 10px 15px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        nav a:hover {
-            background-color: #ffdd57;
-            color: #004085;
-        }
-
-        nav a.active {
-            background-color: #ffdd57;
-            color: #004085;
-        }
-    </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
         <h1>Conserv Building Solutions</h1>
         <nav>
-            <!-- Dynamic navigation links -->
-            <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a>
-            {% if current_user.is_authenticated %}
-                <a href="{{ url_for('logout') }}" class="{% if request.endpoint == 'logout' %}active{% endif %}">Logout</a>
-            {% else %}
-                <a href="{{ url_for('login') }}" class="{% if request.endpoint == 'login' %}active{% endif %}">Login</a>
-                <a href="{{ url_for('signup') }}" class="{% if request.endpoint == 'signup' %}active{% endif %}">Sign Up</a>
-            {% endif %}
-            <a href="{{ url_for('payment') }}" class="{% if request.endpoint == 'payment' %}active{% endif %}">Payment</a>
-            <a href="{{ url_for('verify_address') }}" class="{% if request.endpoint == 'verify_address' %}active{% endif %}">Verify Address</a>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('signup') }}">Sign Up</a>
+            <a href="{{ url_for('payment') }}">Payment</a>
+            <a href="{{ url_for('verify_address') }}">Verify Address</a>
         </nav>
     </header>
-
-    <!-- Slideshow Section -->
-    <div class="slideshow">
-        <div class="slides">
-            <img src="/static/images/pic1.JPG" alt="Aggregate Solutions" class="active">
-            <img src="/static/images/pic2.jpg" alt="High-Quality Building Materials">
-            <img src="/static/images/pic3.JPG" alt="Sustainable Development Practices">
-            <img src="/static/images/pic4.jpg" alt="Reliable Construction Partners">
-            <img src="/static/images/pic5.JPG" alt="Eco-Friendly Aggregates">
-        </div>
-    </div>
-
-    <!-- Main Content -->
     <main>
-        <!-- About Section -->
-        <section class="about">
-            <h2>About Us</h2>
-            <p>
-                Conserv Building Solutions specializes in providing high-quality aggregates and building materials
-                for sustainable construction projects. We are committed to delivering eco-friendly and cost-effective
-                solutions that meet the diverse needs of our clients.
-            </p>
-        </section>
-
-        <!-- Services Section -->
-        <section class="services">
-            <h2>Our Services</h2>
-            <p><strong>Aggregates Supply:</strong> We deliver a wide range of aggregates for construction and infrastructure projects.</p>
-            <p><strong>Consultation:</strong> Expert advice on selecting materials for optimal performance and sustainability.</p>
-            <p><strong>Customized Solutions:</strong> Tailored offerings to match your project’s unique needs.</p>
-        </section>
-
-        <!-- Video Section -->
-        <section class="video-section">
-            <h2>Watch Our Story</h2>
-            <p>Learn more about our commitment to sustainable building solutions.</p>
-            <video controls>
-                <source src="/static/videos/AggregatesCommercial.mov" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </section>
+        {% block content %}
+        {% endblock %}
     </main>
-
-    <!-- Footer -->
     <footer>
-        <p>&copy; 2024 Conserv Building Solutions | Your Trusted Partner in Sustainable Building</p>
+        <p>&copy; 2024 Conserv Building Solutions</p>
     </footer>
-
-    <!-- Slideshow Script -->
-    <script>
-        // Simple JavaScript for slideshow functionality
-        const slides = document.querySelectorAll(".slides img");
-        let currentSlide = 0;
-
-        function showSlide(index) {
-            slides[currentSlide].classList.remove("active");
-            currentSlide = (index + slides.length) % slides.length;
-            slides[currentSlide].classList.add("active");
-        }
-
-        setInterval(() => showSlide(currentSlide + 1), 5000);
-    </script>
 </body>
 </html>
