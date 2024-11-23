@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Make a Payment</h2>
+<form method="POST">
+    <label for="product_name">Product Name:</label>
+    <input type="text" id="product_name" name="product_name" required>
+    <label for="amount">Amount (TTD):</label>
+    <input type="number" id="amount" name="amount" required>
+    <button type="submit">Pay Now</button>
+</form>
+{% endblock %}
