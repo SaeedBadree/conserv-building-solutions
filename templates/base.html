@@ -6,57 +6,33 @@
     <title>{% block title %}Conserv Building Solutions{% endblock %}</title>
     <link rel="stylesheet" href="/static/styles.css">
     <style>
-        /* Additional styles for slideshow */
-        .slideshow {
-            position: relative;
-            max-width: 100%;
-            margin: 20px auto;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        /* Additional styles for navigation */
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #004085;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        .slides img {
-            width: 100%;
-            display: none;
-            transition: opacity 1s ease-in-out;
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        .slides img.active {
-            display: block;
-        }
-
-        /* Section Styling */
-        section {
-            padding: 40px 20px;
-            margin: 20px auto;
-            max-width: 1200px;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        section h2 {
-            margin-bottom: 20px;
+        nav a:hover {
+            background-color: #ffdd57;
             color: #004085;
-            text-align: center;
         }
 
-        section p {
-            font-size: 1.1rem;
-            color: #555;
-            line-height: 1.8;
-            text-align: center;
-        }
-
-        /* Video Section */
-        .video-section video {
-            display: block;
-            margin: 20px auto;
-            max-width: 800px;
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        nav a.active {
+            background-color: #ffdd57;
+            color: #004085;
         }
     </style>
 </head>
@@ -65,15 +41,16 @@
     <header>
         <h1>Conserv Building Solutions</h1>
         <nav>
-            <a href="/">Home</a>
+            <!-- Dynamic navigation links -->
+            <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a>
             {% if current_user.is_authenticated %}
-                <a href="/logout">Logout</a>
+                <a href="{{ url_for('logout') }}" class="{% if request.endpoint == 'logout' %}active{% endif %}">Logout</a>
             {% else %}
-                <a href="/login">Login</a>
-                <a href="/signup">Sign Up</a>
+                <a href="{{ url_for('login') }}" class="{% if request.endpoint == 'login' %}active{% endif %}">Login</a>
+                <a href="{{ url_for('signup') }}" class="{% if request.endpoint == 'signup' %}active{% endif %}">Sign Up</a>
             {% endif %}
-            <a href="/payment">Payment</a>
-            <a href="/verify-address">Verify Address</a>
+            <a href="{{ url_for('payment') }}" class="{% if request.endpoint == 'payment' %}active{% endif %}">Payment</a>
+            <a href="{{ url_for('verify_address') }}" class="{% if request.endpoint == 'verify_address' %}active{% endif %}">Verify Address</a>
         </nav>
     </header>
 
