@@ -25,6 +25,39 @@
         .slides img.active {
             display: block;
         }
+
+        /* Section Styling */
+        section {
+            padding: 40px 20px;
+            margin: 20px auto;
+            max-width: 1200px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        section h2 {
+            margin-bottom: 20px;
+            color: #004085;
+            text-align: center;
+        }
+
+        section p {
+            font-size: 1.1rem;
+            color: #555;
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        /* Video Section */
+        .video-section video {
+            display: block;
+            margin: 20px auto;
+            max-width: 800px;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -57,12 +90,33 @@
 
     <!-- Main Content -->
     <main>
-        {% block content %}
-        <section>
-            <h2>Welcome to Conserv Building Solutions</h2>
-            <p>We specialize in providing sustainable and high-quality building materials for all your construction needs.</p>
+        <!-- About Section -->
+        <section class="about">
+            <h2>About Us</h2>
+            <p>
+                Conserv Building Solutions specializes in providing high-quality aggregates and building materials
+                for sustainable construction projects. We are committed to delivering eco-friendly and cost-effective
+                solutions that meet the diverse needs of our clients.
+            </p>
         </section>
-        {% endblock %}
+
+        <!-- Services Section -->
+        <section class="services">
+            <h2>Our Services</h2>
+            <p><strong>Aggregates Supply:</strong> We deliver a wide range of aggregates for construction and infrastructure projects.</p>
+            <p><strong>Consultation:</strong> Expert advice on selecting materials for optimal performance and sustainability.</p>
+            <p><strong>Customized Solutions:</strong> Tailored offerings to match your project’s unique needs.</p>
+        </section>
+
+        <!-- Video Section -->
+        <section class="video-section">
+            <h2>Watch Our Story</h2>
+            <p>Learn more about our commitment to sustainable building solutions.</p>
+            <video controls>
+                <source src="/static/videos/company-intro.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </section>
     </main>
 
     <!-- Footer -->
@@ -70,6 +124,7 @@
         <p>&copy; 2024 Conserv Building Solutions | Your Trusted Partner in Sustainable Building</p>
     </footer>
 
+    <!-- Slideshow Script -->
     <script>
         // Simple JavaScript for slideshow functionality
         const slides = document.querySelectorAll(".slides img");
