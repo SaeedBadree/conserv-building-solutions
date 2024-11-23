@@ -1,21 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
  <!-- Header -->
- <header>
-    <h1>Conserv Building Solutions</h1>
-    <nav>
-        <!-- Dynamic navigation links -->
-        <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a>
-        {% if current_user.is_authenticated %}
-            <a href="{{ url_for('logout') }}" class="{% if request.endpoint == 'logout' %}active{% endif %}">Logout</a>
-        {% else %}
-            <a href="{{ url_for('login') }}" class="{% if request.endpoint == 'login' %}active{% endif %}">Login</a>
-            <a href="{{ url_for('signup') }}" class="{% if request.endpoint == 'signup' %}active{% endif %}">Sign Up</a>
-        {% endif %}
-        <a href="{{ url_for('payment') }}" class="{% if request.endpoint == 'payment' %}active{% endif %}">Payment</a>
-        <a href="{{ url_for('verify_address') }}" class="{% if request.endpoint == 'verify-address' %}active{% endif %}">Verify Address</a>
-    </nav>
-</header>
+
 
 <!-- Slideshow Section -->
 <div class="slideshow">
@@ -59,10 +45,7 @@
     </section>
 </main>
 
-<!-- Footer -->
-<footer>
-    <p>&copy; 2024 Conserv Building Solutions | Your Trusted Partner in Sustainable Building</p>
-</footer>
+
 
 <!-- Slideshow Script -->
 <script>
