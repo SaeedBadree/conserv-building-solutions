@@ -16,12 +16,13 @@ login_manager.login_view = 'login'
 WIPAY_API_KEY = "YOUR_WIPAY_API_KEY"  # Replace with your WiPay API key
 GOOGLE_MAPS_API_KEY = "AIzaSyAL_nbXfK7r9gRcY2D8VXJ2GQEJmrEvTbw"  # Replace with your Google Maps API key
 
-# Models
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
+    address = db.Column(db.String(300), nullable=False)  # New field for address
+    age = db.Column(db.Integer, nullable=False)          # New field for age
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -38,19 +39,69 @@ def load_user(user_id):
 def index():
     return render_template('index.html')  # Ensure the home page renders correctly
 
+
+@app.route('/products')
+def products():
+    return render_template('products.html')
+
+
+@app.route('/checkout', methods=['GET', 'POST'])
+@login_required
+def checkout():
+    if request.method == 'POST':
+        # Retrieve cart items from the frontend or database
+        cart = request.json if request.is_json else []
+        if not cart:
+            flash('Your cart is empty. Add items to proceed.', 'warning')
+            return redirect(url_for('index'))
+
+        # Calculate the grand total
+        grand_total = sum(item['price'] * item['quantity'] for item in cart)
+
+        # Create an order record (optional, depending on your database structure)
+        for item in cart:
+            order = Order(user_id=current_user.id, product_name=item['product_name'], amount=item['price'] * item['quantity'])
+            db.session.add(order)
+        db.session.commit()
+
+        # Prepare payment request to WiPay
+        payment_data = {
+            "order_id": str(order.id),  # Replace with appropriate order ID logic
+            "amount": grand_total,
+            "currency": "TTD",
+            "redirect_url": url_for('payment_success', _external=True),
+            "callback_url": url_for('payment_callback', _external=True),
+        }
+        headers = {"Authorization": f"Bearer {WIPAY_API_KEY}"}
+        response = requests.post("https://sandbox-api.wipayfinancial.com/v1/payments", json=payment_data, headers=headers)
+
+        if response.status_code == 200:
+            payment_url = response.json().get('payment_url')
+            return redirect(payment_url)
+        else:
+            flash('Payment initiation failed. Please try again.', 'danger')
+            return redirect(url_for('checkout'))
+
+    # Render the checkout page
+    return render_template('checkout.html')
+
+
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    print("Rendering signup.html")
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
         password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
-        
-        user = User(username=username, email=email, password=password)
+        address = request.form['address']
+        age = int(request.form['age'])
+
+        # Create a new user object
+        user = User(username=username, email=email, password=password, address=address, age=age)
         db.session.add(user)
         db.session.commit()
-        
-        flash('Account created successfully!', 'success')
+
+        flash('Account created successfully! Please log in.', 'success')
         return redirect(url_for('login'))
     return render_template('signup.html')
 

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<h2>Checkout</h2>
+<div class="cart-container">
+    <table class="cart-table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody id="cart-body">
+            <!-- Cart rows dynamically populated -->
+        </tbody>
+    </table>
+    <div class="cart-summary">
+        <p><strong>Grand Total:</strong> $<span id="grand-total">0.00</span></p>
+        <button type="button" onclick="submitCheckout()">Proceed to Payment</button>
+    </div>
+</div>
+
+<script>
+    // Example cart stored in localStorage
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function populateCart() {
+        const cartBody = document.getElementById('cart-body');
+        const grandTotalElement = document.getElementById('grand-total');
+        cartBody.innerHTML = ''; // Clear previous rows
+        let grandTotal = 0;
+
+        cart.forEach(item => {
+            const itemTotal = item.price * item.quantity;
+            grandTotal += itemTotal;
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.productName}</td>
+                <td>$${item.price.toFixed(2)}</td>
+                <td>${item.quantity}</td>
+                <td>$${itemTotal.toFixed(2)}</td>
+            `;
+            cartBody.appendChild(row);
+        });
+
+        grandTotalElement.textContent = grandTotal.toFixed(2);
+    }
+
+    function submitCheckout() {
+        fetch('{{ url_for("checkout") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(cart)
+        })
+        .then(response => {
+            if (response.redirected) {
+                window.location.href = response.url; // Redirect to WiPay gateway
+            } else {
+                alert('Payment initiation failed. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    // Populate the cart when the page loads
+    document.addEventListener('DOMContentLoaded', populateCart);
+</script>
+{% endblock %}
